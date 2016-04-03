@@ -79,6 +79,29 @@ public class Compte {
         }
     }
 
+    public void depotLiquide(int n) {
+        //test des préconditions
+        if (!(fermeture != null || solde+n >= minSolde)) {
+            throw new IllegalArgumentException("Précond: Compte, méthode depotLiquide: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        }
+        if (!(quotaDepotLiquide+n <= maxDepotLiquide)) {
+            throw new IllegalArgumentException("Précond: Compte, méthode depotLiquide: le montant déposé fait dépasser le maxDepotLiquide.");
+        }
+
+        //corps de la méthode
+        solde = solde + n;
+        quotaDepotLiquide = quotaDepotLiquide + n;
+
+        //test des invariants
+        try {
+            invariants();
+        }
+        catch (IllegalStateException e) {
+            //relance le message d'erreur avec un identifiant de la méthode qui cause le problème
+            throw new IllegalStateException("Compte, méthode depotLiquide - " + e.getMessage());
+        }
+    }
+
     //Test les invariants de la classe Compte
     private void invariants() {
         if (!(fermeture != null || solde >= minSolde)) {
