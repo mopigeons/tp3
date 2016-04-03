@@ -67,8 +67,10 @@ public class Compte {
         if (!(fermeture != null || solde+n >= minSolde)) {
             throw new IllegalArgumentException("Précond: Compte, méthode depot: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
         }
+
         //corps de la méthode
         solde = solde + n;
+
         //test des invariants
         try {
             invariants();
@@ -99,6 +101,42 @@ public class Compte {
         catch (IllegalStateException e) {
             //relance le message d'erreur avec un identifiant de la méthode qui cause le problème
             throw new IllegalStateException("Compte, méthode depotLiquide - " + e.getMessage());
+        }
+    }
+
+    public void modifierNIP(int nNIP) {
+        //test des préconditions
+        if(nNIP == nip) {
+            throw new IllegalArgumentException("Précond: Compte, méthode modifierNIP: Le nouveau NIP doit être différent de l'ancien.");
+        }
+
+        //corps de la méthode
+        nip = nNIP;
+
+        //test des invariants
+        try {
+            invariants();
+        }
+        catch (IllegalStateException e) {
+            //relance le message d'erreur avec un identifiant de la méthode qui cause le problème
+            throw new IllegalStateException("Compte, méthode modifierNIP - " + e.getMessage());
+        }
+    }
+
+    public void reinitDepotLiquide() {
+        //test des préconditions
+        //aucune précondition
+
+        //corps de la méthode
+        quotaDepotLiquide = 0;
+
+        //test des invariants
+        try {
+            invariants();
+        }
+        catch (IllegalStateException e) {
+            //relance le message d'erreur avec un identifiant de la méthode qui cause le problème
+            throw new IllegalStateException("Compte, méthode reinitDepotLiquide - " + e.getMessage());
         }
     }
 
