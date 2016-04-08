@@ -80,7 +80,7 @@ public class Banque{
         }
         //f within Date
 
-        comptes.replace(nc, new Compte(0, comptes[nc].nip(), comptes[nc].ouverture(), f, comptes[nc].quotaDepotLiquide()));
+        comptes.replace(nc, new Compte(0, comptes.get(nc).nip(), comptes.get(nc).ouverture(), f, comptes.get(nc).quotaDepotLiquide()));
 
         //test des invariants de Banque
         try {
