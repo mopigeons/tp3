@@ -17,6 +17,27 @@ public class Compte {
     private static int minSolde = 0;
     private static int maxDepotLiquide = 10000;
 
+    //getters
+    public int getSolde() {
+        return solde;
+    }
+
+    public int getNip() {
+        return nip;
+    }
+    
+    public Date getOuverture() {
+        return ouverture;
+    }
+
+    public int getQuotaDepotLiquide() {
+        return quotaDepotLiquide;
+    }
+
+    public Date getFermeture() {
+        return fermeture;
+    }
+
     //Constructeur de la classe Compte
     public Compte(int so, int ni, Date ouv, Date ferm, int quotaDL) {
         if (!(ferm != null || so >= minSolde)) {
