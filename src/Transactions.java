@@ -38,9 +38,16 @@ public class Transactions {
         if (m <= 0){
             throw new IllegalArgumentException("Precond de Transactions: transfert nul ou inversé. Le transfert dans être positif");
         }
-        if ((banques.get(b1).comptes().get(n1).getSolde() - m - (banques.get(b2).comptes().get(n2).getSolde() < minSolde){
+        //on vérifie que minSolde est respecté pour le compte transmetteur
+        if ((banques.get(b1).comptes().get(n1).getSolde() - m - (banques.get(b1).fraisTrans()) < minSolde)){
             throw new IllegalArgumentException("Precond de Transactions: fonds insuffisants dans le compte source pour procéder à la transaction.");
         }
+        //on vérifie que minSolde est respecté pour le compte recevant - au cas où que m < frais de transaction
+        if ((banques.get(b2).comptes().get(n2).getSolde() + m - (banques.get(b2).fraisTrans()) < minSolde)){
+            throw new IllegalArgumentException("Precond de Transactions: fonds insuffisants dans le compte source pour procéder à la transaction.");
+        }
+        banques.get(b1).transactionVersAutreBanque(n1, m);
+        banques.get(b2).transactionEnProvenanceAutreBanque(n2,m);
             //les numéros de banque sont associés à une banque unique
 
             //#4: "Prendre soin que le solde global des montants qui sortent des banques soit le même que celui reçu par ces banques"
@@ -59,7 +66,7 @@ public class Transactions {
         }
         catch (IllegalStateException e) {
             // Relance le message d'erreur avec un identifiant de la méthode qui cause le problème
-            throw new IllegalStateException("Constructeur Transactions - " + e.getMessage());
+            throw new IllegalStateException("Transactions, méthode transactionBancaire - " + e.getMessage());
         }
     }
     public void ajouterNouvelleBanque() {
