@@ -3,8 +3,6 @@
  */
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.stream.IntStream;
 
 public class Transactions {
     private static int minSolde = 0;
@@ -32,7 +30,7 @@ public class Transactions {
         if (!banques.get(b1).comptes().containsKey(n1) && !banques.get(b2).comptes().containsKey(n2)){
             throw new IllegalArgumentException("Precond de Transactions: le(s) compte(s) ciblés n'existent pas dans leur banque respective.");
         }
-        if ((banques.get(b1).comptes().get(n1).getFermeture() == null) && (banques.get(b2).comptes().get(n2).getFermeture() == null){
+        if ((banques.get(b1).comptes().get(n1).getFermeture() == null) && (banques.get(b2).comptes().get(n2).getFermeture() == null)){
             throw new IllegalArgumentException("Precond de Transactions: le(s) compte(s) ciblés sont fermés.");
         }
         if (m <= 0){
@@ -48,17 +46,7 @@ public class Transactions {
         }
         banques.get(b1).transactionVersAutreBanque(n1, m);
         banques.get(b2).transactionEnProvenanceAutreBanque(n2,m);
-            //les numéros de banque sont associés à une banque unique
 
-            //#4: "Prendre soin que le solde global des montants qui sortent des banques soit le même que celui reçu par ces banques"
-            //Vérification que les entrées et les sorties des banques soient égales (pas de création ou de perte d'argent)  [n'arrive pas à vérifier: "exceeded time limit"]
-            //(+ over (for i::banques.dom yield banques[i].entrees)) = (+ over (for j::banques.dom yield banques[j].sorties))
-
-        /*if (IntStream.of(mois31Jours).anyMatch(x -> x == mois)){
-            if (jour < 1 && jour > 31){
-                throw new IllegalArgumentException("Invariant de Date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois).");
-            }
-        }*/
         //Test les invariants de la classe Transactions
         try {
             //Test les invariants
@@ -72,23 +60,23 @@ public class Transactions {
     public void ajouterNouvelleBanque() {
         compteur++;
         banques.put(compteur, new Banque(dateOuverture));
+        //Test les invariants de la classe Transactions
+        try {
+            //Test les invariants
+            invariants();
+        } catch (IllegalStateException e) {
+            // Relance le message d'erreur avec un identifiant de la méthode qui cause le problème
+            throw new IllegalStateException("Transactions, méthode ajouterNouvelleBanque - " + e.getMessage());
+        }
     }
-
-
     //Test les invariants de la classe Transactions
     private void invariants() {
-        // num de banque associé à une banque unique
-        // for
-            // for
-                throw new IllegalArgumentException("Invariant de Transactions: 2 banques ont le même numéro de banque dans 'banques'.");
+        // numéro de banque associé à une banque unique
+        for (int i = 0; i <= banques.size(); i++ )
+             for (int j = i+1 ; j<= banques.size(); j++){
+                    if (banques.get(i) == banques.get(j)){
+                     throw new IllegalArgumentException("Invariant de Transactions: 2 banques ont le même numéro de banque dans 'banques'.");
+                 }
+             }
     }
 }
-
-//    Iterator<Entry<Integer, comptes>> it = comptes.iterator();
-/*
-while(it.hasNext()){
-
-        }
-        for (int i = 0; i < comptes.count ){
-        banques.put(i,comptes[i]);
-        }*/
