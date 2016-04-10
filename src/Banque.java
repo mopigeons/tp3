@@ -41,7 +41,7 @@ public class Banque{
     public void ouvrirCompte(int soldeInit, int nc, Date o) {
 
         //test des préconditions
-        if (!(soldeInit>comptes.get(nc).getMinSolde())) {
+        if (!(soldeInit>Compte.getMinSolde())) {
             throw new IllegalArgumentException("Banque, ouvrirCompte : Le solde initial doit être supérieur au solde minimal");
         }
         if (!(comptes.size()<maxNum)) {
@@ -71,13 +71,13 @@ public class Banque{
         if (!(comptes.containsKey(nc))) {
             throw new IllegalArgumentException("Banque, fermerCompte : Le compte spécifié n'est pas dans la banque");
         }
-        if (!(comptes.get(nc).getSolde()==comptes.get(nc).getMinSolde())) {
+        if (!(comptes.get(nc).getSolde()==Compte.getMinSolde())) {
             throw new IllegalArgumentException("Banque, fermerCompte : Il reste de l'argent dans le compte");
         }
         if (!(comptes.get(nc).getFermeture()==null)) {
             throw new IllegalArgumentException("Banque, fermerCompte : Le compte ne peut pas être fermé pour le moment");
         }
-        if (!(comptes.get(nc).getQuotaDepotLiquide()<=comptes.get(nc).getMaxDepotLiquide())) {
+        if (!(comptes.get(nc).getQuotaDepotLiquide()<=Compte.getMaxDepotLiquide())) {
             throw new IllegalArgumentException("Banque, fermerCompte : Le quota de dépôt liquide est dépasé");
         }
 
@@ -99,7 +99,7 @@ public class Banque{
         if (!(comptes.containsKey(nc))) {
             throw new IllegalArgumentException("Banque, supprimerCompte : Le compte spécifié n'est pas dans la banque");
         }
-        if (!(comptes.get(nc).getSolde()==comptes.get(nc).getMinSolde())) {
+        if (!(comptes.get(nc).getSolde()==Compte.getMinSolde())) {
             throw new IllegalArgumentException("Banque, supprimerCompte : Il reste de l'argent dans le compte");
         }
         if (!((d.getAn()>comptes.get(nc).getFermeture().getAn()+2)
@@ -129,7 +129,7 @@ public class Banque{
         if (!(n>0)) {
             throw new IllegalArgumentException("Banque, retraitC : Le solde doit être positif");
         }
-        if (!(comptes.get(nc).getFermeture() == null || comptes.get(nc).getSolde()-n>=comptes.get(nc).getMinSolde())) {
+        if (!(comptes.get(nc).getFermeture() == null || comptes.get(nc).getSolde()-n>=Compte.getMinSolde())) {
             throw new IllegalArgumentException("Banque, retraitC : Le solde du compte doit être supérieur au solde minimal");
         }
 
@@ -177,7 +177,7 @@ public class Banque{
         if (!(comptes.containsKey(nc))) {
             throw new IllegalArgumentException("Banque, depotLC : Le compte spécifié n'est pas dans la banque");
         }
-        if (!(comptes.get(nc).getQuotaDepotLiquide()+n <= comptes.get(nc).getMaxDepotLiquide())) {
+        if (!(comptes.get(nc).getQuotaDepotLiquide()+n <= Compte.getMaxDepotLiquide())) {
             throw new IllegalArgumentException("Banque, depotLC : Le quota pour le dépôt en liquide à été atteint");
         }
         if (!(comptes.get(nc).getFermeture() == null)) {
@@ -207,13 +207,13 @@ public class Banque{
         if (!(comptes.containsKey(nc2))) {
             throw new IllegalArgumentException("Banque, virementC : Le compte spécifié n'est pas dans la banque");
         }
-        if (!(nc1!=nc2)) {
+        if (nc1==nc2) {
             throw new IllegalArgumentException("Banque, virementC : Les deux comptes sont identiques");
         }
         if (!(n>0)) {
             throw new IllegalArgumentException("Banque, virementC : Le montant doit être positif");
         }
-        if (!(comptes.get(nc1).getFermeture() == null || comptes.get(nc1).getSolde()-n>=comptes.get(nc1).getMinSolde())) {
+        if (!(comptes.get(nc1).getFermeture() == null || comptes.get(nc1).getSolde()-n>=Compte.getMinSolde())) {
             throw new IllegalArgumentException("Banque, virementC : Le solde du compte doit être supérieur au solde minimal");
         }
         if (!(comptes.get(nc2).getFermeture() == null)) {
@@ -281,7 +281,7 @@ public class Banque{
         if (!(comptes.get(nc).getFermeture()==null)) {
             throw new IllegalArgumentException("Banque, transactionVersAutreBanque : Le compte doit être ouvert");
         }
-        if (!(comptes.get(nc).getSolde()-(m+fraisTransaction)>=comptes.get(nc).getMinSolde())) {
+        if (!(comptes.get(nc).getSolde()-(m+fraisTransaction)>=Compte.getMinSolde())) {
             throw new IllegalArgumentException("Banque, transactionVersAutreBanque : Le solde du compte doit être supérieur au solde minimal");
         }
 
@@ -312,7 +312,7 @@ public class Banque{
         if (!(comptes.get(nc).getFermeture()==null)) {
             throw new IllegalArgumentException("Banque, transactionEnProvenanceAutreBanque : Le compte doit être ouvert");
         }
-        if (!(comptes.get(nc).getSolde()-(m+fraisTransaction)>=comptes.get(nc).getMinSolde())) {
+        if (!(comptes.get(nc).getSolde()-(m+fraisTransaction)>=Compte.getMinSolde())) {
             throw new IllegalArgumentException("Banque, transactionEnProvenanceAutreBanque : Le solde du compte doit être supérieur au solde minimal");
         }
 

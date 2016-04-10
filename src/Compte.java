@@ -38,11 +38,11 @@ public class Compte {
         return fermeture;
     }
 
-    public int getMinSolde() {
+    public static int getMinSolde() {
         return minSolde;
     }
 
-    public int getMaxDepotLiquide() {
+    public static int getMaxDepotLiquide() {
         return maxDepotLiquide;
     }
 
