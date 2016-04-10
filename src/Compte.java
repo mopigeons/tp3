@@ -38,6 +38,14 @@ public class Compte {
         return fermeture;
     }
 
+    public int getMinSolde() {
+        return minSolde;
+    }
+
+    public int getMaxDepotLiquide() {
+        return maxDepotLiquide;
+    }
+
     //Constructeur de la classe Compte
     public Compte(int so, int ni, Date ouv, Date ferm, int quotaDL) {
         if (!(ferm != null || so >= minSolde)) {

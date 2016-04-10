@@ -49,6 +49,19 @@ public class Date {
         }
 
     }
+
+    public int getJour() {
+        return jour;
+    }
+
+    public int getMois() {
+        return mois;
+    }
+
+    public int getAn() {
+        return an;
+    }
+
     //Test les invariants de la classe Date
     private void invariants() {
         int[] mois31Jours = {1,3,5,7,8,10,12};

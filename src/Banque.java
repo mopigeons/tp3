@@ -1,12 +1,13 @@
 import java.util.HashMap;
 import java.lang.IllegalArgumentException;
 import java.lang.IllegalStateException;
-import Compte;
+import java.util.Iterator;
+import java.util.Set;
 
 
 public class Banque{
 
-    private HashMap<int, Compte> comptes = new HashMap<int Compte>();
+    private HashMap<Integer, Compte> comptes;
     private int soldeG;
     private int soldeV;
     private int entrees;
@@ -18,6 +19,7 @@ public class Banque{
     private static int maxNum = 29999;
 
     public Banque(Date d) {
+        this.comptes = new HashMap<Integer, Compte>();
         soldeG = 0;
         soldeV = 0;
         entrees = 0;
@@ -39,14 +41,14 @@ public class Banque{
     public void ouvrirCompte(int soldeInit, int nc, Date o) {
 
         //test des préconditions
-        if (!(soldeInit>minSolde)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (!(soldeInit>comptes.get(nc).getMinSolde())) {
+            throw new IllegalArgumentException("Banque, ouvrirCompte : Le solde initial doit être supérieur au solde minimal");
         }
         if (!(comptes.size()<maxNum)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, ouvrirCompte : Le nombre maximal de compte pour cette banque est atteint");
         }
         if (comptes.containsKey(nc)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, ouvrirCompte : Le compte spécifié est déjà dans la banque");
         }
 
         entrees=entrees+soldeInit;
@@ -67,18 +69,17 @@ public class Banque{
 
         //test des préconditions
         if (!(comptes.containsKey(nc))) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, fermerCompte : Le compte spécifié n'est pas dans la banque");
         }
-        if (!(comptes.get(nc).getSolde()==minSolde)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (!(comptes.get(nc).getSolde()==comptes.get(nc).getMinSolde())) {
+            throw new IllegalArgumentException("Banque, fermerCompte : Il reste de l'argent dans le compte");
         }
         if (!(comptes.get(nc).getFermeture()==null)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, fermerCompte : Le compte ne peut pas être fermé pour le moment");
         }
-        if (!(comptes.get(nc).getQuotaDepotLiquide()<=maxDepotLiquide)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (!(comptes.get(nc).getQuotaDepotLiquide()<=comptes.get(nc).getMaxDepotLiquide())) {
+            throw new IllegalArgumentException("Banque, fermerCompte : Le quota de dépôt liquide est dépasé");
         }
-        //f within Date
 
         comptes.replace(nc, new Compte(0, comptes.get(nc).getNip(), comptes.get(nc).getOuverture(), f, comptes.get(nc).getQuotaDepotLiquide()));
 
@@ -96,13 +97,14 @@ public class Banque{
 
         //test des préconditions
         if (!(comptes.containsKey(nc))) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, supprimerCompte : Le compte spécifié n'est pas dans la banque");
         }
-        if (!(comptes.get(nc).getSolde()==minSolde)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (!(comptes.get(nc).getSolde()==comptes.get(nc).getMinSolde())) {
+            throw new IllegalArgumentException("Banque, supprimerCompte : Il reste de l'argent dans le compte");
         }
-        //fermeture within Date
-        //Truc compliqué
+        if (!((d.getAn()>comptes.get(nc).getFermeture().getAn()) || (d.getAn()==comptes.get(nc).getFermeture().getAn() && d.getMois()>comptes.get(nc).getFermeture().getMois()) || (d.getAn()==comptes.get(nc).getFermeture().getAn() && d.getMois()==comptes.get(nc).getFermeture().getMois() && d.getJour()>comptes.get(nc).getFermeture().getJour()))) {
+            throw new IllegalArgumentException("Banque, supprimerCompte : On ne peut pas supprimer le compte pour l'instant");
+        }
 
         comptes.remove(nc);
 
@@ -120,13 +122,13 @@ public class Banque{
 
         //test des préconditions
         if (!(comptes.containsKey(nc))) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, retraitC : Le compte spécifié n'est pas dans la banque");
         }
         if (!(n>0)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, retraitC : Le solde doit être positif");
         }
-        if (!(comptes.get(nc).getFermeture() == null || comptes.get(nc).getSolde()-n>=minSolde)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (!(comptes.get(nc).getFermeture() == null || comptes.get(nc).getSolde()-n>=comptes.get(nc).getMinSolde())) {
+            throw new IllegalArgumentException("Banque, retraitC : Le solde du compte doit être supérieur au solde minimal");
         }
 
         soldeV=soldeV-n;
@@ -147,10 +149,10 @@ public class Banque{
 
         //test des préconditions
         if (!(comptes.containsKey(nc))) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, depotC : Le compte spécifié n'est pas dans la banque");
         }
         if (!(comptes.get(nc).getFermeture() == null)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, depotC : Le compte doit être ouvert");
         }
 
         soldeV=soldeV+n;
@@ -171,13 +173,13 @@ public class Banque{
 
         //test des préconditions
         if (!(comptes.containsKey(nc))) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, depotLC : Le compte spécifié n'est pas dans la banque");
         }
-        if (!(comptes.get(nc).getQuotaDepotLiquide()+n <= maxDepotLiquide)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (!(comptes.get(nc).getQuotaDepotLiquide()+n <= comptes.get(nc).getMaxDepotLiquide())) {
+            throw new IllegalArgumentException("Banque, depotLC : Le quota pour le dépôt en liquide à été atteint");
         }
         if (!(comptes.get(nc).getFermeture() == null)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, depotLC : Le compte doit être ouvert");
         }
 
         soldeV=soldeV+n;
@@ -198,22 +200,22 @@ public class Banque{
 
         //test des préconditions
         if (!(comptes.containsKey(nc1))) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, virementC : Le compte spécifié n'est pas dans la banque");
         }
         if (!(comptes.containsKey(nc2))) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, virementC : Le compte spécifié n'est pas dans la banque");
         }
         if (!(nc1!=nc2)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, virementC : Les deux comptes sont identiques");
         }
         if (!(n>0)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, virementC : Le montant doit être positif");
         }
-        if (!(comptes.get(nc1).getFermeture() == null || comptes.get(nc1).getSolde()-n>=minSolde)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (!(comptes.get(nc1).getFermeture() == null || comptes.get(nc1).getSolde()-n>=comptes.get(nc1).getMinSolde())) {
+            throw new IllegalArgumentException("Banque, virementC : Le solde du compte doit être supérieur au solde minimal");
         }
         if (!(comptes.get(nc2).getFermeture() == null)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, virementC : Le compte doit être ouvert");
         }
 
         comptes.get(nc1).retrait(n);
@@ -232,22 +234,28 @@ public class Banque{
     public void bilanV(Date d) {
 
         //test des préconditions
-        if (!(d.j()==dateEF.j())) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (!(d.getJour()==dateEF.getJour())) {
+            throw new IllegalArgumentException("Banque, bilanV : Les jours doivent correspondre");
         }
-        if (!(d.m()==dateEF.m())) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (!(d.getMois()==dateEF.getMois())) {
+            throw new IllegalArgumentException("Banque, bilanV : Les mois doivent correspondre");
         }
 
         int NsoldeV=0;
-        comptes.forEach((k, v)->NsoldeV+=comptes.get(k).getSolde());
-        soldeV=NsoldeV;
         int NsoldeG=0;
-        comptes.forEach((k, v)->NsoldeG+=comptes.get(k).getSolde());
+        Set cles = comptes.keySet();
+        Iterator it = cles.iterator();
+        while(it.hasNext())
+        {
+            Integer cle = (Integer) it.next();
+            NsoldeG+=comptes.get(cle).getSolde();
+            NsoldeV+=comptes.get(cle).getSolde();
+            comptes.get(cle).reinitDepotLiquide();
+        }
+        soldeV=NsoldeV;
         soldeG=NsoldeG;
         entrees=0;
         sorties=0;
-        comptes.forEach((k, v)->comptes.get(k).reinitDepotLiquide());
 
         //test des invariants de Banque
         try {
@@ -263,16 +271,16 @@ public class Banque{
 
         //test des préconditions
         if (!(comptes.containsKey(nc))) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, transactionVersAutreBanque : Le compte spécifié n'est pas dans la banque");
         }
         if (!(m>=0)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, transactionVersAutreBanque : Le solde doit être positif");
         }
         if (!(comptes.get(nc).getFermeture()==null)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, transactionVersAutreBanque : Le compte doit être ouvert");
         }
-        if (!(comptes.get(nc).getSolde()-(m+fraisTransaction)>=minSolde)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (!(comptes.get(nc).getSolde()-(m+fraisTransaction)>=comptes.get(nc).getMinSolde())) {
+            throw new IllegalArgumentException("Banque, transactionVersAutreBanque : Le solde du compte doit être supérieur au solde minimal");
         }
 
         comptes.get(nc).retrait(m+fraisTransaction);
@@ -294,16 +302,16 @@ public class Banque{
 
         //test des préconditions
         if (!(comptes.containsKey(nc))) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, transactionEnProvenanceAutreBanque : Le compte spécifié n'est pas dans la banque");
         }
         if (!(m>=0)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, transactionEnProvenanceAutreBanque : Le solde doit être positif");
         }
         if (!(comptes.get(nc).getFermeture()==null)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+            throw new IllegalArgumentException("Banque, transactionEnProvenanceAutreBanque : Le compte doit être ouvert");
         }
-        if (!(comptes.get(nc).getSolde()-(m+fraisTransaction)>=minSolde)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (!(comptes.get(nc).getSolde()-(m+fraisTransaction)>=comptes.get(nc).getMinSolde())) {
+            throw new IllegalArgumentException("Banque, transactionEnProvenanceAutreBanque : Le solde du compte doit être supérieur au solde minimal");
         }
 
         comptes.get(nc).depot(m+fraisTransaction);
@@ -321,7 +329,7 @@ public class Banque{
         }
     }
 
-    public HashMap<int, Compte> comptes() {
+    public HashMap<Integer, Compte> comptes() {
         return comptes;
     }
 
