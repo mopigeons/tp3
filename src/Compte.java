@@ -46,8 +46,13 @@ public class Compte {
         return maxDepotLiquide;
     }
 
+    //Les 'setters' sont utilisés seulement pour les tests unitaires et devraient être désactivé dans un programme final
     public void setQuotaDepotLiquide(int dl) {
         quotaDepotLiquide = dl;
+    }
+
+    public void setSolde(int so) {
+        solde = so;
     }
 
     //Constructeur de la classe Compte

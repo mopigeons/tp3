@@ -6,6 +6,7 @@ public class TestBanque {
 
     //methode principale de test
     public static void testBanqueMain() {
+        Date d1 = new Date(10,4,2016);
         System.out.println("**************************************");
         System.out.println("***         TESTS: BANQUE          ***");
         System.out.println("**************************************");
@@ -103,47 +104,65 @@ public class TestBanque {
             System.out.println(e.getMessage());
         }
 
+
         //TEST supprimerCompte:
         System.out.println("\n** Tests: supprimerCompte");
         //cas valide
         System.out.println("Cas valide:");
-
+        Banque b4 = new Banque(new Date(10,4,2016));
+        b4.ouvrirCompte(1, 1, new Date (1,4,2010)); //ouvre un nouv compte avec solde =1
+        b4.retraitC(1,1); //retire le solde du compte
+        b4.fermerCompte(1, new Date(10,4,2012)); //ferme le compte
+        b4.supprimerCompte(1, new Date(10,4,2016));
         System.out.println("ok");
         //cas invalide: compte inexistant
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte inexistant");
         try{
-
+            b4.supprimerCompte(2, new Date(10,4,2016));
         } catch(IllegalArgumentException e) {
-
+            System.out.println(e.getMessage());
         }
         //cas invalide: solde inégale à minSolde
-        System.out.println("Cas invalide:");
+        b4.ouvrirCompte(1, 2, new Date (1,4,2010)); //ouvre un nouv compte avec solde =1
+        b4.retraitC(2,1); //retire le solde du compte
+        b4.fermerCompte(2, new Date(10,4,2012)); //ferme le compte
+        b4.comptes().get(2).setSolde(100);
+        System.out.println("Cas invalide: solde inégale à minSolde");
         try{
-
+            b4.supprimerCompte(2, d1);
         } catch(IllegalArgumentException e) {
-
+            System.out.println(e.getMessage());
         }
         //cas invalide: 2 ans d'attente pas respecté
             //année pas ok
-        System.out.println("Cas invalide:");
+        b4.ouvrirCompte(100, 3, new Date (1,4,2010)); //ouvre un nouv compte avec solde =1
+        b4.retraitC(3,100); //retire le solde du compte
+        b4.fermerCompte(3, new Date(10,4,2015)); //ferme le compte
+        System.out.println("Cas invalide: 2 ans d'attente pas respecté (année pas ok)");
         try{
-
+            b4.supprimerCompte(3, d1);
         } catch(IllegalArgumentException e) {
-
+            System.out.println(e.getMessage());
         }
             //année ok, mois non
-        System.out.println("Cas invalide:");
+        b4.ouvrirCompte(100, 4, new Date (1,4,2010)); //ouvre un nouv compte avec solde =1
+        b4.retraitC(4,100); //retire le solde du compte
+        b4.fermerCompte(4, new Date(10,5,2014)); //ferme le compte
+        System.out.println("Cas invalide: 2 ans d'attente pas respecté (année ok, mois non)");
         try{
-
+            b4.fermerCompte(4, d1);
         } catch(IllegalArgumentException e) {
-
+            System.out.println(e.getMessage());
         }
             //année, mois ok, jour non
-        System.out.println("Cas invalide:");
+        b4.ouvrirCompte(100, 5, new Date (1,4,2010)); //ouvre un nouv compte avec solde =1
+        b4.retraitC(5,100); //retire le solde du compte
+        b4.fermerCompte(5, new Date(11,5,2014)); //ferme le compte
+        System.out.println("Cas invalide: 2 ans d'attente pas respecté (année+mois ok, jour non)");
         try{
-
+            b4.supprimerCompte(5, d1);
         } catch(IllegalArgumentException e) {
-
+            System.out.println(e.getMessage());
         }
 
         //TEST retraitC:
