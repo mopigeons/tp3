@@ -46,6 +46,10 @@ public class Compte {
         return maxDepotLiquide;
     }
 
+    public void setQuotaDepotLiquide(int dl) {
+        quotaDepotLiquide = dl;
+    }
+
     //Constructeur de la classe Compte
     public Compte(int so, int ni, Date ouv, Date ferm, int quotaDL) {
         if (!(ferm != null || so >= minSolde)) {

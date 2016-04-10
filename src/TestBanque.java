@@ -33,7 +33,7 @@ public class TestBanque {
             b1.ouvrirCompte(Compte.getMinSolde()-1, 5, new Date (1,4,2015));
         }
         catch(IllegalArgumentException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         //cas invalide: maxNum comptes déjà atteint
         System.out.println("Cas invalide: nombre max de comptes déjà atteint");
@@ -46,44 +46,61 @@ public class TestBanque {
         try {
             b2.ouvrirCompte(1000, 6, new Date(1,1,2000));
         } catch (IllegalArgumentException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         //cas invalide: compte existe déjà
         System.out.println("Cas invalide: le compte existe déjà");
+        try{
+            b1.ouvrirCompte(500, 1, new Date (1,4,2015));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
+
 
         //TEST fermerCompte:
         System.out.println("\n** Tests: fermerCompte");
         //cas valide
         System.out.println("Cas valide:");
-
+        Banque b3 = new Banque(new Date(10,4,2016));
+        b3.ouvrirCompte(1, 1, new Date (1,4,2015)); //ouvre un nouv compte avec solde =1
+        b3.retraitC(1,1); //retire le solde du compte
+        b3.fermerCompte(1, new Date(10,4,2016)); //ferme le compte
         System.out.println("ok");
         //cas invalide: compte inexistant
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte inexistant");
         try{
-
+            b3.fermerCompte(2, new Date(10,4,2016));
         } catch(IllegalArgumentException e) {
-
+            System.out.println(e.getMessage());
         }
         //cas invalide: solde inégale à minSolde
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: solde inégal à minSolde");
         try{
-
+            b3.ouvrirCompte(100, 2, new Date(1,1,2000));
+            b3.fermerCompte(2, new Date(10,4,2016));
         } catch(IllegalArgumentException e) {
-
+            System.out.println(e.getMessage());
         }
         //cas invalide: le compte a déjà une date de fermeture
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: Le compte est déjà fermé (date de fermeture présente)");
+        b3.ouvrirCompte(100, 3, new Date(1,1,2000));
+        b3.retraitC(3, 100);
+        b3.fermerCompte(3, new Date(10,4,2015));
         try{
-
+            b3.fermerCompte(3, new Date(10,4,2016));
         } catch(IllegalArgumentException e) {
-
+            System.out.println(e.getMessage());
         }
         //cas invalide: QuotaDepotLiquide dépassé
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: Quote Dépot Liquide dépassé");
+        b3.ouvrirCompte(100,4, new Date(1,1,2000));
+        b3.retraitC(4,100);
+        b3.comptes().get(4).setQuotaDepotLiquide(Compte.getMaxDepotLiquide()+1);
         try{
-
+            b3.fermerCompte(4, new Date(10,4,2016));
         } catch(IllegalArgumentException e) {
-
+            System.out.println(e.getMessage());
         }
 
         //TEST supprimerCompte:

@@ -78,7 +78,7 @@ public class Banque{
             throw new IllegalArgumentException("Banque, fermerCompte : Le compte ne peut pas être fermé pour le moment");
         }
         if (!(comptes.get(nc).getQuotaDepotLiquide()<=Compte.getMaxDepotLiquide())) {
-            throw new IllegalArgumentException("Banque, fermerCompte : Le quota de dépôt liquide est dépasé");
+            throw new IllegalArgumentException("Banque, fermerCompte : Le quota de dépôt liquide est dépassé");
         }
 
         comptes.replace(nc, new Compte(0, comptes.get(nc).getNip(), comptes.get(nc).getOuverture(), f, comptes.get(nc).getQuotaDepotLiquide()));
