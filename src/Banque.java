@@ -16,7 +16,7 @@ public class Banque{
     private Date dateEF;
 
     private static int fraisTransaction = 2;
-    private static int maxNum = 29999;
+    private static int maxNum = 5;
 
     public Banque(Date d) {
         this.comptes = new HashMap<Integer, Compte>();
@@ -102,9 +102,11 @@ public class Banque{
         if (!(comptes.get(nc).getSolde()==comptes.get(nc).getMinSolde())) {
             throw new IllegalArgumentException("Banque, supprimerCompte : Il reste de l'argent dans le compte");
         }
-        if (!((d.getAn()>comptes.get(nc).getFermeture().getAn()) || (d.getAn()==comptes.get(nc).getFermeture().getAn() && d.getMois()>comptes.get(nc).getFermeture().getMois()) || (d.getAn()==comptes.get(nc).getFermeture().getAn() && d.getMois()==comptes.get(nc).getFermeture().getMois() && d.getJour()>comptes.get(nc).getFermeture().getJour()))) {
-            throw new IllegalArgumentException("Banque, supprimerCompte : On ne peut pas supprimer le compte pour l'instant");
-        }
+        if (!((d.getAn()>comptes.get(nc).getFermeture().getAn()+2)
+                || (d.getAn()==comptes.get(nc).getFermeture().getAn()+2 && d.getMois()>comptes.get(nc).getFermeture().getMois())
+                || (d.getAn()==comptes.get(nc).getFermeture().getAn()+2 && d.getMois()==comptes.get(nc).getFermeture().getMois() && d.getJour()>comptes.get(nc).getFermeture().getJour()))) {
+                    throw new IllegalArgumentException("Banque, supprimerCompte : On ne peut pas supprimer le compte pour l'instant");
+                }
 
         comptes.remove(nc);
 
@@ -274,7 +276,7 @@ public class Banque{
             throw new IllegalArgumentException("Banque, transactionVersAutreBanque : Le compte spécifié n'est pas dans la banque");
         }
         if (!(m>=0)) {
-            throw new IllegalArgumentException("Banque, transactionVersAutreBanque : Le solde doit être positif");
+            throw new IllegalArgumentException("Banque, transactionVersAutreBanque : Le montant à transférer doit être positif");
         }
         if (!(comptes.get(nc).getFermeture()==null)) {
             throw new IllegalArgumentException("Banque, transactionVersAutreBanque : Le compte doit être ouvert");
@@ -305,7 +307,7 @@ public class Banque{
             throw new IllegalArgumentException("Banque, transactionEnProvenanceAutreBanque : Le compte spécifié n'est pas dans la banque");
         }
         if (!(m>=0)) {
-            throw new IllegalArgumentException("Banque, transactionEnProvenanceAutreBanque : Le solde doit être positif");
+            throw new IllegalArgumentException("Banque, transactionEnProvenanceAutreBanque : Le montant à transférer doit être positif");
         }
         if (!(comptes.get(nc).getFermeture()==null)) {
             throw new IllegalArgumentException("Banque, transactionEnProvenanceAutreBanque : Le compte doit être ouvert");
