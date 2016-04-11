@@ -223,27 +223,31 @@ public class TestBanque {
         //TEST depotLC
         System.out.println("\n** Tests: depotLC");
         //cas valide
+        Banque b7 = new Banque(d1);
+        b7.ouvrirCompte(100, 1, d1);
         System.out.println("Cas valide:");
-
+        b7.depotLC(1, 100);
         System.out.println("ok");
         //cas invalide: compte inexistant
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte inexistant");
         try{
-
+            b7.depotLC(2, 100);
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
         }
         //cas invalide: dépot fait dépasser le Quota Dépot Liquide
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: dépot fait dépasser le quota dépot liquide");
         try{
-
+            b7.depotLC(1, 99999999);
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
         }
         //cas invalide: le compte est fermé
-        System.out.println("Cas invalide:");
+        b7.retraitC(1, 200);
+        b7.fermerCompte(1, d1);
+        System.out.println("Cas invalide: compte fermé");
         try{
-
+            b7.depotLC(1, 100);
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
         }
