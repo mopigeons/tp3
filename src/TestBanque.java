@@ -34,7 +34,7 @@ public class TestBanque {
             b1.ouvrirCompte(Compte.getMinSolde()-1, 5, new Date (1,4,2015));
         }
         catch(IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: maxNum comptes déjà atteint
         System.out.println("Cas invalide: nombre max de comptes déjà atteint");
@@ -47,14 +47,14 @@ public class TestBanque {
         try {
             b2.ouvrirCompte(1000, 6, new Date(1,1,2000));
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: compte existe déjà
         System.out.println("Cas invalide: le compte existe déjà");
         try{
             b1.ouvrirCompte(500, 1, new Date (1,4,2015));
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
 
 
@@ -73,7 +73,7 @@ public class TestBanque {
         try{
             b3.fermerCompte(2, new Date(10,4,2016));
         } catch(IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: solde inégale à minSolde
         System.out.println("Cas invalide: solde inégal à minSolde");
@@ -81,7 +81,7 @@ public class TestBanque {
             b3.ouvrirCompte(100, 2, new Date(1,1,2000));
             b3.fermerCompte(2, new Date(10,4,2016));
         } catch(IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: le compte a déjà une date de fermeture
         System.out.println("Cas invalide: Le compte est déjà fermé (date de fermeture présente)");
@@ -91,7 +91,7 @@ public class TestBanque {
         try{
             b3.fermerCompte(3, new Date(10,4,2016));
         } catch(IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: QuotaDepotLiquide dépassé
         System.out.println("Cas invalide: Quote Dépot Liquide dépassé");
@@ -101,7 +101,7 @@ public class TestBanque {
         try{
             b3.fermerCompte(4, new Date(10,4,2016));
         } catch(IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
 
 
@@ -120,7 +120,7 @@ public class TestBanque {
         try{
             b4.supprimerCompte(2, new Date(10,4,2016));
         } catch(IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: solde inégale à minSolde
         b4.ouvrirCompte(1, 2, new Date (1,4,2010)); //ouvre un nouv compte avec solde =1
@@ -131,7 +131,7 @@ public class TestBanque {
         try{
             b4.supprimerCompte(2, d1);
         } catch(IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: 2 ans d'attente pas respecté
             //année pas ok
@@ -142,7 +142,7 @@ public class TestBanque {
         try{
             b4.supprimerCompte(3, d1);
         } catch(IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
             //année ok, mois non
         b4.ouvrirCompte(100, 4, new Date (1,4,2010)); //ouvre un nouv compte avec solde =1
@@ -152,7 +152,7 @@ public class TestBanque {
         try{
             b4.fermerCompte(4, d1);
         } catch(IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
             //année, mois ok, jour non
         b4.ouvrirCompte(100, 5, new Date (1,4,2010)); //ouvre un nouv compte avec solde =1
@@ -162,64 +162,62 @@ public class TestBanque {
         try{
             b4.supprimerCompte(5, d1);
         } catch(IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("*" + e.getMessage());
         }
 
         //TEST retraitC:
+        Banque b5 = new Banque(d1);
+        b5.ouvrirCompte(400, 1, d1);
         System.out.println("\n** Tests: retraitC");
         //cas valide
         System.out.println("Cas valide:");
-
+        b5.retraitC(1, 100);
         System.out.println("ok");
         //cas invalide: compte inexistant
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte inexistant");
         try{
-
+            b5.retraitC(2, 100);
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
-        //cas invalide: solde non positif
-            //solde 0
-        System.out.println("Cas invalide:");
+        //cas invalide: montant retrait non positif
+        System.out.println("Cas invalide: montant retiré ne peut pas être négatif");
         try{
-
+            b5.retraitC(1, -100);
         } catch(IllegalArgumentException e) {
-
-        }
-            //solde négatif
-        System.out.println("Cas invalide:");
-        try{
-
-        } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: solde inférieur au solde minimal
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: retrait fait passer en dessous du solde minimal");
         try{
-
+            b5.retraitC(1, 600);
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
 
         //TEST depotC:
         System.out.println("\n** Tests: depotC");
         //cas valide
+        Banque b6 = new Banque(d1);
+        b6.ouvrirCompte(100, 1, d1);
         System.out.println("Cas valide:");
-
+        b6.depotC(1, 100);
         System.out.println("ok");
         //cas invalide: compte inexistant
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte inexistant");
         try{
-
+            b6.depotC(2,100);
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: compte fermé
-        System.out.println("Cas invalide:");
+        b6.retraitC(1, 200);
+        b6.fermerCompte(1, d1);
+        System.out.println("Cas invalide: compte fermé");
         try{
-
+            b6.depotC(1, 100);
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
 
         //TEST depotLC
@@ -233,21 +231,21 @@ public class TestBanque {
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: dépot fait dépasser le Quota Dépot Liquide
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: le compte est fermé
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
 
         //TEST virementC
@@ -261,49 +259,49 @@ public class TestBanque {
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: compte 2 inexistant
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: compte 1 et compte 2 identique
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: montant à transférer est négatif
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: le virement fait passer le solde sous le solde minimal
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: le compte 1 est fermé
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: le compte 2 est fermé
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
 
         //TEST bilanV
@@ -317,21 +315,21 @@ public class TestBanque {
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: le mois ne correspond pas
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: le jour et le mois ne correspondent pas
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
 
         //TEST transactionVersAutreBanque
@@ -345,28 +343,28 @@ public class TestBanque {
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: montant transféré négatif
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: compte fermé
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: nouveau solde ne respecte pas le solde minimal
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
 
         //TEST transactionProvenanceAutreBanque
@@ -380,28 +378,28 @@ public class TestBanque {
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: montant transféré négatif
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: compte fermé
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
         //cas invalide: nouveau solde ne respecte pas le solde minimal
         System.out.println("Cas invalide:");
         try{
 
         } catch(IllegalArgumentException e) {
-
+            System.out.println("*" + e.getMessage());
         }
 
 

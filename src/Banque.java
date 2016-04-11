@@ -127,7 +127,7 @@ public class Banque{
             throw new IllegalArgumentException("Banque, retraitC : Le compte spécifié n'est pas dans la banque");
         }
         if (!(n>0)) {
-            throw new IllegalArgumentException("Banque, retraitC : Le solde doit être positif");
+            throw new IllegalArgumentException("Banque, retraitC : Le montant retiré doit être positif");
         }
         if (!(comptes.get(nc).getFermeture() == null || comptes.get(nc).getSolde()-n>=Compte.getMinSolde())) {
             throw new IllegalArgumentException("Banque, retraitC : Le solde du compte doit être supérieur au solde minimal");
