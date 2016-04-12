@@ -553,14 +553,17 @@ public class TestBanque {
         //cas valide
         totalCounter++;
         System.out.println("Cas valide:");
-
+        Banque b10 = new Banque(d1);
+        b10.ouvrirCompte(100, 1, d1);
+        b10.transactionVersAutreBanque(1, 5);
         System.out.println("ok");
         okCounter++;
         //cas invalide: compte inexistant
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte inexistant");
         try{
-
+            b10.transactionVersAutreBanque(2, 5);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -570,9 +573,10 @@ public class TestBanque {
         }
         //cas invalide: montant transféré négatif
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: montant transféré négatif");
         try{
-
+            b10.transactionVersAutreBanque(1, -5);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -582,9 +586,13 @@ public class TestBanque {
         }
         //cas invalide: compte fermé
         totalCounter++;
-        System.out.println("Cas invalide:");
+        b10.ouvrirCompte(100, 3, d1);
+        b10.retraitC(3, 100);
+        b10.fermerCompte(3, d1);
+        System.out.println("Cas invalide: compte fermé");
         try{
-
+            b10.transactionVersAutreBanque(3, 1);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -596,7 +604,8 @@ public class TestBanque {
         totalCounter++;
         System.out.println("Cas invalide:");
         try{
-
+            b10.transactionVersAutreBanque(1, 1000);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -606,18 +615,21 @@ public class TestBanque {
         }
 
         //TEST transactionProvenanceAutreBanque
-        System.out.println("\n** Tests: transactionVersAutreBanque");
+        System.out.println("\n** Tests: transactionProvenanceAutreBanque");
         //cas valide
         totalCounter++;
         System.out.println("Cas valide:");
-
+        Banque b11 = new Banque(d1);
+        b11.ouvrirCompte(95, 1, d1);
+        b11.transactionEnProvenanceAutreBanque(1, 5);
         System.out.println("ok");
         okCounter++;
         //cas invalide: compte inexistant
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte inexistant");
         try{
-
+            b11.transactionEnProvenanceAutreBanque(2, 100);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -627,9 +639,10 @@ public class TestBanque {
         }
         //cas invalide: montant transféré négatif
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: montant transféré négatif");
         try{
-
+            b11.transactionEnProvenanceAutreBanque(1, -5);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -639,9 +652,13 @@ public class TestBanque {
         }
         //cas invalide: compte fermé
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte fermé");
+        b11.ouvrirCompte(100, 3, new Date(1,1,2000));
+        b11.retraitC(3, 100);
+        b11.fermerCompte(3, new Date(1,1,2010));
         try{
-
+            b11.transactionEnProvenanceAutreBanque(3, 2);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -651,9 +668,11 @@ public class TestBanque {
         }
         //cas invalide: nouveau solde ne respecte pas le solde minimal
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: nouveau solde ne respecte pas le solde min");
+        b11.ouvrirCompte(1, 5, d1);
         try{
-
+            b11.transactionEnProvenanceAutreBanque(5, 1);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
