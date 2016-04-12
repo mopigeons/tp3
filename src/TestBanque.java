@@ -503,14 +503,17 @@ public class TestBanque {
         //cas valide
         totalCounter++;
         System.out.println("Cas valide:");
-
+        Banque b9 = new Banque(d1);
+        b9.bilanV(d1);  //cas valide, date avec même année
+        b9.bilanV(new Date(10,4,2015)); //cas valide, date avec année diff.
         System.out.println("ok");
         okCounter++;
         //cas invalide: le jour ne correspond pas
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: le jour ne correspond pas");
         try{
-
+            b9.bilanV(new Date(11,4,2016));
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -520,9 +523,10 @@ public class TestBanque {
         }
         //cas invalide: le mois ne correspond pas
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: le mois ne correspond pas");
         try{
-
+            b9.bilanV(new Date(10,7,2016));
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -532,9 +536,10 @@ public class TestBanque {
         }
         //cas invalide: le jour et le mois ne correspondent pas
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: le jour et le mois ne correspondent pas");
         try{
-
+            b9.bilanV(new Date(11,5,2016));
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
