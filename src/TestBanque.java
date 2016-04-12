@@ -396,14 +396,18 @@ public class TestBanque {
         //cas valide
         totalCounter++;
         System.out.println("Cas valide:");
-
+        Banque b8 = new Banque(d1);
+        b8.ouvrirCompte(100, 1, d1);
+        b8.ouvrirCompte(100, 2, d1);
+        b8.virementC(1, 2, 50);
         System.out.println("ok");
         okCounter++;
         //cas invalide: compte 1 inexistant
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte 1 inexistant");
         try{
-
+            b8.virementC(3, 2, 50);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -413,9 +417,10 @@ public class TestBanque {
         }
         //cas invalide: compte 2 inexistant
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte 2 inexistant");
         try{
-
+            b8.virementC(2, 3, 50);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -425,9 +430,10 @@ public class TestBanque {
         }
         //cas invalide: compte 1 et compte 2 identique
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte 1 et 2 identiques");
         try{
-
+            b8.virementC(1,1,50);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -437,9 +443,10 @@ public class TestBanque {
         }
         //cas invalide: montant à transférer est négatif
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: transfert d'un montant négatif");
         try{
-
+            b8.virementC(1, 2, -1);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -449,9 +456,11 @@ public class TestBanque {
         }
         //cas invalide: le virement fait passer le solde sous le solde minimal
         totalCounter++;
-        System.out.println("Cas invalide:");
+        b8.ouvrirCompte(10, 3, d1);
+        System.out.println("Cas invalide: virement fait passer compte 1 sous le solde minimal (on suppose solde min = 0)");
         try{
-
+            b8.virementC(3, 1, 11);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -461,9 +470,13 @@ public class TestBanque {
         }
         //cas invalide: le compte 1 est fermé
         totalCounter++;
-        System.out.println("Cas invalide:");
+        b8.ouvrirCompte(100, 4, new Date(1,1,2000));
+        b8.retraitC(4, 100);
+        b8.fermerCompte(4, new Date(10,4,2012));
+        System.out.println("Cas invalide: compte 1 est fermé");
         try{
-
+            b8.virementC(4, 2, 1);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
@@ -473,9 +486,10 @@ public class TestBanque {
         }
         //cas invalide: le compte 2 est fermé
         totalCounter++;
-        System.out.println("Cas invalide:");
+        System.out.println("Cas invalide: compte 2 est fermé");
         try{
-
+            b8.virementC(2,4, 1);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
         } catch(IllegalArgumentException e) {
             System.out.println("*" + e.getMessage());
             okCounter++;
