@@ -38,14 +38,15 @@ public class Date {
         jour = j;
         mois = m;
         an = a;
-        //test des invariants de Compte
+
+        // Test les invariants de Date
         try {
-            //teste les invariants
+            //Test les invariants
             invariants();
         }
         catch (IllegalStateException e) {
-            //relance le message d'erreur avec un identifiant de la méthode qui cause le problème
-            throw new IllegalStateException("Constructeur Compte - " + e.getMessage());
+            // Relance le message d'erreur avec un identifiant de la méthode qui cause le problème
+            throw new IllegalStateException("Constructeur Date - " + e.getMessage());
         }
 
     }
