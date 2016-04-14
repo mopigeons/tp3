@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 public class Date {
 
     private int jour,mois,an;
-    //Constructeur de la classe Compte
+    //Constructeur de la classe Date
     public Date(int j, int m, int a) {
         int[] mois31Jours = {1,3,5,7,8,10,12};
         int[] mois30Jours = {4,6,9,11};

@@ -51,14 +51,16 @@ public class Compte {
         quotaDepotLiquide = dl;
     }
 
-    public void setSolde(int so) {
-        solde = so;
-    }
+    public void setSolde(int so) {solde = so; }
+
+    public void setDateO(Date douv) {ouverture = douv; }
+
+    public void setDateF(Date dferm) {fermeture = dferm; }
 
     //Constructeur de la classe Compte
     public Compte(int so, int ni, Date ouv, Date ferm, int quotaDL) {
-        if (!(ferm != null || so >= minSolde)) {
-            throw new IllegalArgumentException("Précond: Constructeur de compte: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (ferm != null || so < minSolde) {
+            throw new IllegalArgumentException("Précond: Constructeur de compte: Un compte doit être ouvert et avec un solde >= au solde minimal.");
         }
         if (!(quotaDL <= maxDepotLiquide)) {
             throw new IllegalArgumentException("Précond: Constructeur de compte: Le montant en dépot liquide ne doit pas être supérieur au maximum permissible.");
@@ -83,8 +85,8 @@ public class Compte {
 
     public void retrait(int n) {
         //test des préconditions
-        if (!(fermeture != null || solde-n >= minSolde)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (fermeture != null || solde-n < minSolde) {
+            throw new IllegalArgumentException("Précond: Compte, méthode retrait: Un compte doit être ouvert et ouvert avec un solde >= au solde minimal.");
         }
 
         //corps de la méthode
@@ -102,8 +104,8 @@ public class Compte {
 
     public void depot(int n) {
         //test des préconditions
-        if (!(fermeture != null || solde+n >= minSolde)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode depot: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (fermeture != null || solde+n < minSolde) {
+            throw new IllegalArgumentException("Précond: Compte, méthode depot: Un compte doit être ouvert et avec un solde >= au solde minimal.");
         }
 
         //corps de la méthode
@@ -121,8 +123,8 @@ public class Compte {
 
     public void depotLiquide(int n) {
         //test des préconditions
-        if (!(fermeture != null || solde+n >= minSolde)) {
-            throw new IllegalArgumentException("Précond: Compte, méthode depotLiquide: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (fermeture != null || solde+n < minSolde) {
+            throw new IllegalArgumentException("Précond: Compte, méthode depotLiquide: Un compte doit être ouvert et avec un solde >= au solde minimal.");
         }
         if (!(quotaDepotLiquide+n <= maxDepotLiquide)) {
             throw new IllegalArgumentException("Précond: Compte, méthode depotLiquide: le montant déposé fait dépasser le maxDepotLiquide.");
@@ -180,8 +182,8 @@ public class Compte {
 
     //Test les invariants de la classe Compte
     private void invariants() {
-        if (!(fermeture != null || solde >= minSolde)) {
-            throw new IllegalStateException("Invariant de Compte: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
+        if (fermeture != null || solde < minSolde) {
+            throw new IllegalStateException("Invariant de Compte: Un compte doit être ouvert et avec un solde >= au solde minimal.");
         }
         if (!(quotaDepotLiquide <= maxDepotLiquide)) {
             throw new IllegalStateException("Invariant de Compte: Le montant en dépot liquide ne doit pas être supérieur au maximum permissible.");
