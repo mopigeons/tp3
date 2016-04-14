@@ -69,6 +69,28 @@ public class Transactions {
             throw new IllegalStateException("Transactions, méthode ajouterNouvelleBanque - " + e.getMessage());
         }
     }
+    public void ajouterCompteABanque(int nb, int solde, int nc, Date d) {
+        banques.get(nb).ouvrirCompte(solde, nc, d);
+        //Test les invariants de la classe Transactions
+        try {
+            //Test les invariants
+            invariants();
+        } catch (IllegalStateException e) {
+            // Relance le message d'erreur avec un identifiant de la méthode qui cause le problème
+            throw new IllegalStateException("Transactions, méthode ajouterCompteABanque - " + e.getMessage());
+        }
+    }
+    public void fermerCompteABanque(int nb, int nc, Date d) {
+        banques.get(nb).fermerCompte(nc, d);
+        //Test les invariants de la classe Transactions
+        try {
+            //Test les invariants
+            invariants();
+        } catch (IllegalStateException e) {
+            // Relance le message d'erreur avec un identifiant de la méthode qui cause le problème
+            throw new IllegalStateException("Transactions, méthode ajouterCompteABanque - " + e.getMessage());
+        }
+    }
     //Test les invariants de la classe Transactions
     private void invariants() {
         // numéro de banque associé à une banque unique

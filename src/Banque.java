@@ -15,7 +15,7 @@ public class Banque{
     private int gains;
     private Date dateEF;
 
-    private static int fraisTransaction = 2;
+    private static int fraisTransaction = 3;
     private static int maxNum = 5;
 
     public Banque(Date d) {
