@@ -59,9 +59,11 @@ public class Compte {
 
     //Constructeur de la classe Compte
     public Compte(int so, int ni, Date ouv, Date ferm, int quotaDL) {
-        if (ferm != null || so < minSolde) {
-            throw new IllegalArgumentException("Précond: Constructeur de compte: Un compte doit être ouvert et avec un solde >= au solde minimal.");
+        if (!(ferm != null || so >= minSolde)) {
+            throw new IllegalArgumentException("Précond: Constructeur de compte: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
         }
+
+
         if (!(quotaDL <= maxDepotLiquide)) {
             throw new IllegalArgumentException("Précond: Constructeur de compte: Le montant en dépot liquide ne doit pas être supérieur au maximum permissible.");
         }
@@ -182,7 +184,7 @@ public class Compte {
 
     //Test les invariants de la classe Compte
     private void invariants() {
-        if (fermeture != null || solde < minSolde) {
+        if (!(fermeture != null || solde >= minSolde)) {
             throw new IllegalStateException("Invariant de Compte: Un compte doit être ouvert et avec un solde >= au solde minimal.");
         }
         if (!(quotaDepotLiquide <= maxDepotLiquide)) {
