@@ -1,5 +1,11 @@
 /**
- * Created by echal on 16-04-12.
+ * \file TestCompte.java
+ * \brief Vérification de la spécification de la classe Compte
+ * \author Étienne Chalifour 111011736 B-IFT, Marc-Gabriel Morin-Grandmont 111103591 B-IFT, Simon Rodier 111083079 B-IFT
+ * \date Avril 2016
+ *
+ * Travail pratique #3
+ *
  */
 public class TestCompte {
     //methode principale de test

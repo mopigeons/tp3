@@ -1,5 +1,11 @@
 /**
- * Created by echal.
+ * \file Transactions.java
+ * \brief Définition des transactions inter-banque
+ * \author Étienne Chalifour 111011736 B-IFT, Marc-Gabriel Morin-Grandmont 111103591 B-IFT, Simon Rodier 111083079 B-IFT
+ * \date Avril 2016
+ *
+ * Travail pratique #3
+ *
  */
 import java.util.Map;
 import java.util.HashMap;

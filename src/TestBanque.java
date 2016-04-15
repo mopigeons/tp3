@@ -1,6 +1,13 @@
 /**
- * Created by Simon on 2016-04-10.
+ * \file TestBanque.java
+ * \brief Vérification de la spécification de la classe Banque
+ * \author Étienne Chalifour 111011736 B-IFT, Marc-Gabriel Morin-Grandmont 111103591 B-IFT, Simon Rodier 111083079 B-IFT
+ * \date Avril 2016
+ *
+ * Travail pratique #3
+ *
  */
+
 public class TestBanque {
 
 

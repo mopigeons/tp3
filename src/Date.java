@@ -1,5 +1,11 @@
 /**
- * Created by Simon on 2016-04-03.
+ * \file Date.java
+ * \brief Définition de Date et la validation des jours dans un mois ainsi que les années bissextile
+ * \author Étienne Chalifour 111011736 B-IFT, Marc-Gabriel Morin-Grandmont 111103591 B-IFT, Simon Rodier 111083079 B-IFT
+ * \date Avril 2016
+ *
+ * Travail pratique #3
+ *
  */
 import java.lang.IllegalArgumentException;
 import java.lang.IllegalStateException;
