@@ -18,14 +18,14 @@ public class TestTransaction {
         totalCounter++;
         Transactions t = new Transactions();
         t.ajouterNouvelleBanque();
-        t.ajouterCompteABanque(0, 100, 1, new Date(13, 4, 2016));
+        t.ajouterCompteABanque(0, 0, 4, new Date(13, 4, 2016));
         System.out.println("ok");
         okCounter++;
 
         System.out.println("\n** Tests: fermerCompteABanque");
         System.out.println("Cas valide:");
         totalCounter++;
-        t.fermerCompteABanque(0, 1, new Date(15, 4, 2016));
+        t.fermerCompteABanque(0, 4, new Date(15, 4, 2016));
         System.out.println("ok");
         okCounter++;
 

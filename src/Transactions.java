@@ -30,7 +30,7 @@ public class Transactions {
         if (!banques.get(b1).comptes().containsKey(n1) && !banques.get(b2).comptes().containsKey(n2)){
             throw new IllegalArgumentException("Precond de Transactions: le(s) compte(s) ciblés n'existent pas dans leur banque respective.");
         }
-        if ((banques.get(b1).comptes().get(n1).getFermeture() == null) && (banques.get(b2).comptes().get(n2).getFermeture() == null)){
+        if (!(banques.get(b1).comptes().get(n1).getFermeture() == null) && (banques.get(b2).comptes().get(n2).getFermeture() == null)){
             throw new IllegalArgumentException("Precond de Transactions: le(s) compte(s) ciblés sont fermés.");
         }
         if (m <= 0){
