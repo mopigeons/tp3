@@ -31,7 +31,7 @@ public class Date {
                 throw new IllegalArgumentException("Précond: Constructeur de date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois) [année bissextile].");
             }
         } else {
-            // On vérifie les jours s'il s'agit d'un mois qui a 31 jours
+            // On vérifie que le mois de février à une quantité de jour standard
             if (j < 1 || j > 28){
                 throw new IllegalArgumentException("Précond: Constructeur de date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois).");
             }
