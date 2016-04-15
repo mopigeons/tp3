@@ -41,7 +41,7 @@ public class Banque{
     public void ouvrirCompte(int soldeInit, int nc, Date o) {
 
         //test des préconditions
-        if (!(soldeInit>Compte.getMinSolde())) {
+        if (!(soldeInit>=0)) { //Parce qu'on ne peut pas récupérer directement le soldeMin d'un compte non créé
             throw new IllegalArgumentException("Banque, ouvrirCompte : Le solde initial doit être supérieur au solde minimal");
         }
         if (!(comptes.size()<maxNum)) {
