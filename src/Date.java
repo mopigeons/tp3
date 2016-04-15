@@ -13,23 +13,26 @@ public class Date {
     public Date(int j, int m, int a) {
         int[] mois31Jours = {1,3,5,7,8,10,12};
         int[] mois30Jours = {4,6,9,11};
-
+        // On vérifie les jours s'il s'agit d'un mois qui a 31 jours
         if (IntStream.of(mois31Jours).anyMatch(x -> x == m)){
-            if (j < 1 && j > 31){
+            if (j < 1 || j > 31){
                 throw new IllegalArgumentException("Précond: Constructeur de date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois).");
             }
         }
+        // On vérifie les jours s'il s'agit d'un mois qui a 30 jours
         else if (IntStream.of(mois30Jours).anyMatch(x -> x == m)){
-            if (j < 1 && j > 30){
+            if (j < 1 || j > 30){
                 throw new IllegalArgumentException("Précond: Constructeur de date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois).");
             }
         }
-        else if (m == 2 && ((a % 4)==0 && (a % 100)!=0 ) || ((a % 400) == 0 && (a % 100)!=0)) {
-            if (j < 1 && j > 29){
-                throw new IllegalArgumentException("Précond: Constructeur de date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois).");
+        // On vérifie les années bissextile
+        else if (m == 2 && ((a % 4)==0 && (a % 100)!=0 ) || ((a % 400) == 0)) {
+            if (j < 1 || j > 29){
+                throw new IllegalArgumentException("Précond: Constructeur de date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois) [année bissextile].");
             }
         } else {
-            if (j < 1 && j > 28){
+            // On vérifie les jours s'il s'agit d'un mois qui a 31 jours
+            if (j < 1 || j > 28){
                 throw new IllegalArgumentException("Précond: Constructeur de date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois).");
             }
         }
