@@ -101,6 +101,20 @@ public class TestDate {
             errorCounter++;
         }
 
+        System.out.println("Cas invalide: le jour est supérieur à 29 pour le mois de Février et l'année est bissextile"); //Divisible par 400
+        totalCounter++;
+        try {
+            d1 = new Date(30, 2, 2000);
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
+        }
+        catch(IllegalArgumentException e) {
+            System.out.println("*" + e.getMessage());
+            okCounter++;
+        } catch(IllegalStateException e) {
+            System.out.println("*" + e.getMessage());
+            errorCounter++;
+        }
+
         //Résumé des tests
         System.out.println("");
         System.out.println("NOMBRE DE TESTS EFFECTUÉS: " + totalCounter);
