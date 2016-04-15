@@ -15,21 +15,21 @@ public class Date {
         int[] mois30Jours = {4,6,9,11};
 
         if (IntStream.of(mois31Jours).anyMatch(x -> x == m)){
-            if (j < 1 && j > 31){
+            if (j < 1 || j > 31){
                 throw new IllegalArgumentException("Précond: Constructeur de date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois).");
             }
         }
         else if (IntStream.of(mois30Jours).anyMatch(x -> x == m)){
-            if (j < 1 && j > 30){
+            if (j < 1 || j > 30){
                 throw new IllegalArgumentException("Précond: Constructeur de date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois).");
             }
         }
         else if (m == 2 && ((a % 4)==0 && (a % 100)!=0 ) || ((a % 400) == 0 && (a % 100)!=0)) {
-            if (j < 1 && j > 29){
+            if (j < 1 || j > 29){
                 throw new IllegalArgumentException("Précond: Constructeur de date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois).");
             }
         } else {
-            if (j < 1 && j > 28){
+            if (j < 1 || j > 28){
                 throw new IllegalArgumentException("Précond: Constructeur de date: Les mois ne respectent pas les règles du calendrier (trop ou pas assez de jours dans le mois).");
             }
         }
