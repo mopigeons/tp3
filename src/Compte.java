@@ -184,7 +184,7 @@ public class Compte {
 
     //Test les invariants de la classe Compte
     private void invariants() {
-        if (!(fermeture != null || solde >= minSolde)) {
+        if (!((fermeture != null && solde == minSolde)||(fermeture==null && solde >= minSolde))) {
             throw new IllegalStateException("Invariant de Compte: Un compte doit être ouvert et avec un solde >= au solde minimal.");
         }
         if (!(quotaDepotLiquide <= maxDepotLiquide)) {
