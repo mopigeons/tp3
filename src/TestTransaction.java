@@ -142,6 +142,22 @@ public class TestTransaction {
             errorCounter++;
         }
 
+        System.out.println("Cas invalide: deux banques sont identiques");
+        totalCounter++;
+        try {
+            t1.ajouterCompteABanque(1, 1, 3, new Date(13, 4, 2016));
+            t1.ajouterCompteABanque(1, 1, 3, new Date(13, 4, 2016));
+            throw new IllegalStateException("ERREUR: Cas invalide doit provoquer une exception");
+        }
+        catch(IllegalArgumentException e) {
+            System.out.println("*" + e.getMessage());
+            okCounter++;
+        } catch(IllegalStateException e) {
+            System.out.println("*" + e.getMessage());
+            errorCounter++;
+        }
+
+
         //Résumé des tests
         System.out.println("");
         System.out.println("NOMBRE DE TESTS EFFECTUÉS: " + totalCounter);
