@@ -15,24 +15,28 @@ public class Transactions {
     }
 
     public void transactionBancaire (int b1, int n1, int b2, int n2, int m) {
-
+        // On vérifie que les banques font patie du système
         if (!banques.containsKey(b1) && !banques.containsKey(b2)){
             throw new IllegalArgumentException("Precond de Transactions: b1 ou b2 ne font pas partie des banques.");
         }
+        // Les banques doivent être différentes
         if (b1 == b2){
-            throw new IllegalArgumentException("Precond de Transactions: b1 et b2 ont le même numéro de banque.");
-
+            throw new IllegalArgumentException("Precond de Transactions: b1 et b2 ont le même numéro de banque.");// Les banques doivent être différentes
         }
+        // On vérifie que les 2 banques ne sont pas la même banque sous des numéros différents
         if (banques.get(b1) == banques.get(b2)){
             throw new IllegalArgumentException("Precond de Transactions: les 2 banques ont des numéros différents mais sont en fait la même banque.");
 
         }
+        // On vérifie que les comptes existent dans leur banque respective
         if (!banques.get(b1).comptes().containsKey(n1) && !banques.get(b2).comptes().containsKey(n2)){
             throw new IllegalArgumentException("Precond de Transactions: le(s) compte(s) ciblés n'existent pas dans leur banque respective.");
         }
+        // On vérifie que les comptes ne sont pas fermés
         if (!(banques.get(b1).comptes().get(n1).getFermeture() == null) && (banques.get(b2).comptes().get(n2).getFermeture() == null)){
             throw new IllegalArgumentException("Precond de Transactions: le(s) compte(s) ciblés sont fermés.");
         }
+        // Transfert valide >0
         if (m <= 0){
             throw new IllegalArgumentException("Precond de Transactions: transfert nul ou inversé. Le transfert dans être positif");
         }
@@ -44,6 +48,7 @@ public class Transactions {
         if ((banques.get(b2).comptes().get(n2).getSolde() + m - (banques.get(b2).fraisTrans()) < minSolde)){
             throw new IllegalArgumentException("Precond de Transactions: fonds insuffisants dans le compte source pour procéder à la transaction.");
         }
+        // On exécute le transfert
         banques.get(b1).transactionVersAutreBanque(n1, m);
         banques.get(b2).transactionEnProvenanceAutreBanque(n2,m);
 
