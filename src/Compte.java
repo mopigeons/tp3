@@ -59,7 +59,7 @@ public class Compte {
 
     //Constructeur de la classe Compte
     public Compte(int so, int ni, Date ouv, Date ferm, int quotaDL) {
-        if (!(ferm != null || so >= minSolde)) {
+        if (!((ferm != null && so == minSolde)||(ferm==null && so>= minSolde))) {
             throw new IllegalArgumentException("Précond: Constructeur de compte: Un compte doit être soit fermé, soit ouvert avec un solde >= au solde minimal.");
         }
 
